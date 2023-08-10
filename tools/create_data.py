@@ -2,7 +2,7 @@ import argparse
 
 from data_converter import nuscenes_converter as nuscenes_converter
 from data_converter.create_gt_database import create_groundtruth_database
-
+from os import path as osp
 
 def nuscenes_data_prep(
     root_path,
@@ -37,10 +37,10 @@ def nuscenes_data_prep(
         #     nuscenes_converter.export_2d_annotation(root_path, info_test_path, version=version)
         #     return
 
-        # info_train_path = osp.join(root_path, f"{info_prefix}_infos_train.pkl")
-        # info_val_path = osp.join(root_path, f"{info_prefix}_infos_val.pkl")
-        # nuscenes_converter.export_2d_annotation(root_path, info_train_path, version=version)
-        # nuscenes_converter.export_2d_annotation(root_path, info_val_path, version=version)
+        info_train_path = osp.join(root_path, f"{info_prefix}_infos_train.pkl")
+        info_val_path = osp.join(root_path, f"{info_prefix}_infos_val.pkl")
+        nuscenes_converter.export_2d_annotation(root_path, info_train_path, version=version)
+        nuscenes_converter.export_2d_annotation(root_path, info_val_path, version=version)
 
     create_groundtruth_database(
         dataset_name,
