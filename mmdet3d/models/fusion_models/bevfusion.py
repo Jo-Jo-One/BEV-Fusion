@@ -34,7 +34,6 @@ class BEVFusion(Base3DFusionModel):
     ) -> None:
         super().__init__()
 
-        pdb.set_trace()
         self.encoders = nn.ModuleDict()
         if encoders.get("camera") is not None:
             self.encoders["camera"] = nn.ModuleDict(
@@ -120,6 +119,7 @@ class BEVFusion(Base3DFusionModel):
         img_metas,
         gt_depths=None,
     ) -> torch.Tensor:
+        # pdb.set_trace()
         B, N, C, H, W = x.size()
         x = x.view(B * N, C, H, W)
 

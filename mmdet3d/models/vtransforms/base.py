@@ -1,3 +1,4 @@
+import pdb
 from typing import Tuple
 
 import torch
@@ -253,6 +254,7 @@ class BaseDepthTransform(BaseTransform):
         metas,
         **kwargs,
     ):
+        pdb.set_trace()
         rots = sensor2ego[..., :3, :3]
         trans = sensor2ego[..., :3, 3]
         intrins = cam_intrinsic[..., :3, :3]
@@ -346,7 +348,9 @@ class BaseDepthTransform(BaseTransform):
             'bda_mat': lidar_aug_matrix,
             'sensor2ego_mats': sensor2ego, 
         }
+        pdb.set_trace()
         x = self.get_cam_feats(img, depth, mats_dict)
+
 
         use_depth = False
         if type(x) == tuple:

@@ -1,3 +1,4 @@
+import pdb
 from typing import Tuple
 
 import torch
@@ -47,7 +48,8 @@ class DepthLSSTransform(BaseDepthTransform):
             nn.ReLU(True),
         )
         self.depthnet = nn.Sequential(
-            nn.Conv2d(in_channels + 64, in_channels, 3, padding=1),
+            # nn.Conv2d(in_channels + 64, in_channels, 3, padding=1),
+            nn.Conv2d(in_channels, in_channels, 3, padding=1),
             nn.BatchNorm2d(in_channels),
             nn.ReLU(True),
             nn.Conv2d(in_channels, in_channels, 3, padding=1),
@@ -80,13 +82,14 @@ class DepthLSSTransform(BaseDepthTransform):
 
     @force_fp32()
     def get_cam_feats(self, x, d):
+        pdb.set_trace()
         B, N, C, fH, fW = x.shape
 
         d = d.view(B * N, *d.shape[2:])
         x = x.view(B * N, C, fH, fW)
 
-        d = self.dtransform(d)
-        x = torch.cat([d, x], dim=1)
+        # d = self.dtransform(d)
+        # x = torch.cat([d, x], dim=1)
         x = self.depthnet(x)
 
         depth = x[:, : self.D].softmax(dim=1)

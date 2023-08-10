@@ -2,6 +2,7 @@ import mmcv
 import torch
 import pdb
 
+
 def single_gpu_test(model, data_loader):
     pdb.set_trace()
     model.eval()
