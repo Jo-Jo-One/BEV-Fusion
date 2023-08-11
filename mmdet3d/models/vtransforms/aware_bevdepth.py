@@ -399,6 +399,7 @@ class AwareBEVDepth(BaseTransform):
 
     @force_fp32()
     def get_cam_feats(self, x, mats_dict):
+        pdb.set_trace()
         B, N, C, fH, fW = x.shape
 
         x = x.view(B * N, C, fH, fW)

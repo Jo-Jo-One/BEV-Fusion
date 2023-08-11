@@ -37,7 +37,8 @@ class DepthLSSTransform(BaseDepthTransform):
             dbound=dbound,
         )
         self.dtransform = nn.Sequential(
-            nn.Conv2d(1, 8, 1),
+            # nn.Conv2d(1, 8, 1),
+            nn.Conv2d(6, 8, 1),
             nn.BatchNorm2d(8),
             nn.ReLU(True),
             nn.Conv2d(8, 32, 5, stride=4, padding=2),
@@ -48,8 +49,7 @@ class DepthLSSTransform(BaseDepthTransform):
             nn.ReLU(True),
         )
         self.depthnet = nn.Sequential(
-            # nn.Conv2d(in_channels + 64, in_channels, 3, padding=1),
-            nn.Conv2d(in_channels, in_channels, 3, padding=1),
+            nn.Conv2d(in_channels + 64, in_channels, 3, padding=1),
             nn.BatchNorm2d(in_channels),
             nn.ReLU(True),
             nn.Conv2d(in_channels, in_channels, 3, padding=1),
@@ -86,10 +86,11 @@ class DepthLSSTransform(BaseDepthTransform):
         B, N, C, fH, fW = x.shape
 
         d = d.view(B * N, *d.shape[2:])
+        # d.shape = [6, 6, 256, 704]
         x = x.view(B * N, C, fH, fW)
 
-        # d = self.dtransform(d)
-        # x = torch.cat([d, x], dim=1)
+        d = self.dtransform(d)
+        x = torch.cat([d, x], dim=1)
         x = self.depthnet(x)
 
         depth = x[:, : self.D].softmax(dim=1)
