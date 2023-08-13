@@ -208,6 +208,8 @@ BEVFusion is based on [mmdetection3d](https://github.com/open-mmlab/mmdetection3
 
 Please also check out related papers in the camera-only 3D perception community such as [BEVDet4D](https://arxiv.org/abs/2203.17054), [BEVerse](https://arxiv.org/abs/2205.09743), [BEVFormer](https://arxiv.org/abs/2203.17270), [M2BEV](https://arxiv.org/abs/2204.05088), [PETR](https://arxiv.org/abs/2203.05625) and [PETRv2](https://arxiv.org/abs/2206.01256), which might be interesting future extensions to BEVFusion.
 
+### PR 방법
+JoJoOne 팀의 PR방법 설명
 
 ## Citation
 
