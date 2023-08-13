@@ -1,7 +1,6 @@
 import argparse
 import copy
 import os
-import pdb
 import warnings
 
 import mmcv
@@ -160,9 +159,7 @@ def main():
                 ds_cfg.pipeline = replace_ImageToTensor(ds_cfg.pipeline)
 
     # init distributed env first, since logger depends on the dist info.
-    # distributed = True
-    # debug version
-    distributed = False
+    distributed = True
 
     # set random seeds
     if args.seed is not None:
@@ -181,7 +178,6 @@ def main():
     # build the model and load checkpoint
     cfg.model.train_cfg = None
     model = build_model(cfg.model, test_cfg=cfg.get("test_cfg"))
-    print(model)
     fp16_cfg = cfg.get("fp16", None)
     if fp16_cfg is not None:
         wrap_fp16_model(model)
@@ -205,8 +201,6 @@ def main():
             broadcast_buffers=False,
         )
         outputs = multi_gpu_test(model, data_loader, args.tmpdir, args.gpu_collect)
-
-    print(outputs)
 
     rank, _ = get_dist_info()
     if rank == 0:
