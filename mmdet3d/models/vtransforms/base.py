@@ -1,4 +1,3 @@
-import pdb
 from typing import Tuple
 
 import torch
@@ -36,7 +35,9 @@ class BaseTransform(nn.Module):
         use_points='lidar', 
         depth_input='scalar',
         height_expand=True,
-        add_depth_features=True,
+        # add_depth_features=True,
+        # issue 458
+        add_depth_features=False,
     ) -> None:
         super().__init__()
         self.in_channels = in_channels
@@ -254,7 +255,6 @@ class BaseDepthTransform(BaseTransform):
         metas,
         **kwargs,
     ):
-        pdb.set_trace()
         rots = sensor2ego[..., :3, :3]
         trans = sensor2ego[..., :3, 3]
         intrins = cam_intrinsic[..., :3, :3]
@@ -348,7 +348,6 @@ class BaseDepthTransform(BaseTransform):
             'bda_mat': lidar_aug_matrix,
             'sensor2ego_mats': sensor2ego, 
         }
-        pdb.set_trace()
         x = self.get_cam_feats(img, depth, mats_dict)
 
 

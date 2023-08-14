@@ -160,9 +160,9 @@ def main():
                 ds_cfg.pipeline = replace_ImageToTensor(ds_cfg.pipeline)
 
     # init distributed env first, since logger depends on the dist info.
-    # distributed = True
+    distributed = True
     # test distributed False
-    distributed = False
+    # distributed = False
     # set random seeds
     if args.seed is not None:
         set_random_seed(args.seed, deterministic=args.deterministic)
@@ -202,7 +202,8 @@ def main():
             broadcast_buffers=False,
         )
         outputs = multi_gpu_test(model, data_loader, args.tmpdir, args.gpu_collect)
-
+    pdb.set_trace()
+    # image projection
     rank, _ = get_dist_info()
     if rank == 0:
         if args.out:
