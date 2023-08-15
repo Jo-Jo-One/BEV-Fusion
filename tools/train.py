@@ -74,12 +74,15 @@ def main():
             cfg["sync_bn"] = dict(exclude=[])
         model = convert_sync_batchnorm(model, exclude=cfg["sync_bn"]["exclude"])
 
+    # We don't have multi gpu, So we don't need distributed
+    distributed = False
+
     logger.info(f"Model:\n{model}")
     train_model(
         model,
         datasets,
         cfg,
-        distributed=True,
+        distributed=distributed,
         validate=True,
         timestamp=timestamp,
     )

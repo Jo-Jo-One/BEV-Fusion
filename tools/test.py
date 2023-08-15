@@ -1,7 +1,6 @@
 import argparse
 import copy
 import os
-import pdb
 import warnings
 
 import mmcv
