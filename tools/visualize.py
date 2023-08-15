@@ -6,7 +6,7 @@ import mmcv
 import numpy as np
 import torch
 from mmcv import Config
-from mmcv.parallel import MMDistributedDataParallel
+from mmcv.parallel import MMDataParallel, MMDistributedDataParallel
 from mmcv.runner import load_checkpoint
 from torchpack import distributed as dist
 from torchpack.utils.config import configs
@@ -58,13 +58,17 @@ def main() -> None:
     torch.backends.cudnn.benchmark = cfg.cudnn_benchmark
     torch.cuda.set_device(dist.local_rank())
 
+    # We Can't use distributed So implement No distributed
+    # test debug
+    distributed = False
+
     # build the dataloader
     dataset = build_dataset(cfg.data[args.split])
     dataflow = build_dataloader(
         dataset,
         samples_per_gpu=1,
         workers_per_gpu=cfg.data.workers_per_gpu,
-        dist=True,
+        dist=distributed,
         shuffle=False,
     )
 
@@ -73,11 +77,14 @@ def main() -> None:
         model = build_model(cfg.model)
         load_checkpoint(model, args.checkpoint, map_location="cpu")
 
-        model = MMDistributedDataParallel(
-            model.cuda(),
-            device_ids=[torch.cuda.current_device()],
-            broadcast_buffers=False,
-        )
+        if not distributed:
+            model = MMDataParallel(model, device_ids=[0])
+        else:
+            model = MMDistributedDataParallel(
+                model.cuda(),
+                device_ids=[torch.cuda.current_device()],
+                broadcast_buffers=False,
+            )
         model.eval()
 
     for data in tqdm(dataflow):

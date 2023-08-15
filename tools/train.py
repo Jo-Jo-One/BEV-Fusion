@@ -16,6 +16,8 @@ from mmdet3d.datasets import build_dataset
 from mmdet3d.models import build_model
 from mmdet3d.utils import get_root_logger, convert_sync_batchnorm, recursive_eval
 
+os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:256"
+
 
 def main():
     dist.init()
@@ -72,12 +74,15 @@ def main():
             cfg["sync_bn"] = dict(exclude=[])
         model = convert_sync_batchnorm(model, exclude=cfg["sync_bn"]["exclude"])
 
+    # We don't have multi gpu, So we don't need distributed
+    distributed = False
+
     logger.info(f"Model:\n{model}")
     train_model(
         model,
         datasets,
         cfg,
-        distributed=True,
+        distributed=distributed,
         validate=True,
         timestamp=timestamp,
     )
