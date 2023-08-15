@@ -61,7 +61,6 @@ def main() -> None:
 
     # We Can't use distributed So implement No distributed
     # test debug
-    pdb.set_trace()
     distributed = False
 
     # build the dataloader
@@ -90,6 +89,7 @@ def main() -> None:
         model.eval()
 
     for data in tqdm(dataflow):
+        pdb.set_trace()
         metas = data["metas"].data[0][0]
         name = "{}-{}".format(metas["timestamp"], metas["token"])
 
