@@ -1,7 +1,6 @@
 import argparse
 import copy
 import os
-import pdb
 
 import mmcv
 import numpy as np
@@ -89,7 +88,6 @@ def main() -> None:
         model.eval()
 
     for data in tqdm(dataflow):
-        pdb.set_trace()
         metas = data["metas"].data[0][0]
         name = "{}-{}".format(metas["timestamp"], metas["token"])
 
