@@ -16,6 +16,8 @@ from mmdet3d.datasets import build_dataset
 from mmdet3d.models import build_model
 from mmdet3d.utils import get_root_logger, convert_sync_batchnorm, recursive_eval
 
+os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:256"
+
 
 def main():
     dist.init()
