@@ -144,9 +144,11 @@ def viz_lidar_heading(
         coords = bboxes.corners[:, [0, 3, 7, 4, 0], :2]
         listCoords = coords.tolist()
         for index in range(coords.shape[0]):
-            centerX = (listCoords[index][1][0] - listCoords[index][0][0]) / 2
-            centerY = (listCoords[index][3][1] - listCoords[index][0][1]) / 2
-            headingLine = [[centerX, centerY], [centerX, listCoords[index][1][0]]]
+            centerX = (listCoords[index][1][0] + listCoords[index][3][0]) / 2
+            centerY = (listCoords[index][1][1] + listCoords[index][3][1]) / 2
+            headingX = (listCoords[index][0][0] + listCoords[index][1][0]) / 2
+            headingY = (listCoords[index][0][1] + listCoords[index][1][1]) / 2
+            headingLine = [[centerX, centerY], [headingX, headingY]]
             name = classes[labels[index]]
             plt.plot(
                 coords[index, :, 0],
