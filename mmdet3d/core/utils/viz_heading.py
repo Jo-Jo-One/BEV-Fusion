@@ -1,6 +1,7 @@
 import copy
 import os
 from typing import List, Optional, Tuple
+import pdb
 
 import cv2
 import mmcv
@@ -9,7 +10,7 @@ from matplotlib import pyplot as plt
 
 from ..bbox import LiDARInstance3DBoxes
 
-__all__ = ["visualize_camera", "visualize_lidar", "visualize_map"]
+__all__ = ["visualize_camera", "viz_lidar_heading", "visualize_map"]
 
 
 OBJECT_PALETTE = {
@@ -110,7 +111,7 @@ def visualize_camera(
     mmcv.imwrite(canvas, fpath)
 
 
-def visualize_lidar(
+def viz_lidar_heading(
     fpath: str,
     lidar: Optional[np.ndarray] = None,
     *,
@@ -141,14 +142,28 @@ def visualize_lidar(
 
     if bboxes is not None and len(bboxes) > 0:
         coords = bboxes.corners[:, [0, 3, 7, 4, 0], :2]
+        listCoords = coords.tolist()
         for index in range(coords.shape[0]):
             name = classes[labels[index]]
             plt.plot(
-                coords[index, :, 0],
-                coords[index, :, 1],
+                Coords[index, :, 0],
+                Coords[index, :, 1],
                 linewidth=thickness,
                 color=np.array(color or OBJECT_PALETTE[name]) / 255,
             )
+
+        for index in range(coords.shape[0]):
+            centerX = (listCoords[index,1,0]-listCoords[index,0,0])/2
+            centerY = (listCoords[index,3,1]-listCoords[index,0,1])/2
+            headingLine = [[centerX, centerY],[listCoords[index,0,0],centerY]]
+            name = classes[labels[index]]
+            plt.plot(
+                headingLine[ :, 0],
+                headingLine[ :, 1],
+                linewidth=thickness,
+                color=np.array(color or OBJECT_PALETTE[name]) / 255,
+            )
+
 
     mmcv.mkdir_or_exist(os.path.dirname(fpath))
     fig.savefig(

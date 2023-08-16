@@ -1,6 +1,7 @@
 import argparse
 import copy
 import os
+import pdb
 
 import mmcv
 import numpy as np
@@ -15,7 +16,7 @@ from torchpack.utils.config import configs
 from tqdm import tqdm
 
 from mmdet3d.core import LiDARInstance3DBoxes
-from mmdet3d.core.utils import visualize_camera, visualize_lidar, visualize_map
+from mmdet3d.core.utils import visualize_camera, viz_lidar_heading, visualize_map
 from mmdet3d.datasets import build_dataloader, build_dataset
 from mmdet3d.models import build_model
 
@@ -143,9 +144,14 @@ def main() -> None:
                     classes=cfg.object_classes,
                 )
 
+        # pdb.set_trace()
+        # print(bboxes.corners[:, [0, 3, 7, 4, 0], :2][0,0,0])
+        # coords = bboxes.corners[:, [0, 3, 7, 4, 0], :2]
+        # listCoords = coords.tolist()
+        # print(listCoords)
         if "points" in data:
             lidar = data["points"].data[0][0].numpy()
-            visualize_lidar(
+            viz_lidar_heading(
                 os.path.join(args.out_dir, "lidar", f"{name}.png"),
                 lidar,
                 bboxes=bboxes,
