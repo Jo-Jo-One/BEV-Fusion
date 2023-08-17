@@ -146,8 +146,8 @@ def viz_lidar_heading(
         for index in range(coords.shape[0]):
             centerX = (listCoords[index][1][0] + listCoords[index][3][0]) / 2
             centerY = (listCoords[index][1][1] + listCoords[index][3][1]) / 2
-            headingX = (listCoords[index][0][0] + listCoords[index][1][0]) / 2
-            headingY = (listCoords[index][0][1] + listCoords[index][1][1]) / 2
+            headingX = (listCoords[index][0][0] + listCoords[index][3][0]) / 2
+            headingY = (listCoords[index][0][1] + listCoords[index][3][1]) / 2
             headingLine = [[centerX, centerY], [headingX, headingY]]
             name = classes[labels[index]]
             plt.plot(
@@ -162,18 +162,6 @@ def viz_lidar_heading(
                 linewidth=thickness,
                 color=np.array(color or OBJECT_PALETTE[name]) / 255,
             )
-
-        # for index in range(coords.shape[0]):
-        #     centerX = (listCoords[index, 1, 0] - listCoords[index, 0, 0]) / 2
-        #     centerY = (listCoords[index, 3, 1] - listCoords[index, 0, 1]) / 2
-        #     headingLine = [[centerX, centerY], [centerX, listCoords[index, 1, 0]]]
-        #     name = classes[labels[index]]
-        #     plt.plot(
-        #         headingLine[ :, 0],
-        #         headingLine[ :, 1],
-        #         linewidth=thickness,
-        #         color=np.array(color or OBJECT_PALETTE[name]) / 255,
-        #     )
 
     mmcv.mkdir_or_exist(os.path.dirname(fpath))
     fig.savefig(
