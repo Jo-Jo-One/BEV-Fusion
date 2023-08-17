@@ -145,7 +145,6 @@ def main() -> None:
                 )
 
         # pdb.set_trace()
-        # print(bboxes.corners[:, [0, 3, 7, 4, 0], :2][0,0,0])
         # coords = bboxes.corners[:, [0, 3, 7, 4, 0], :2]
         # listCoords = coords.tolist()
         # print(listCoords)
